@@ -1,13 +1,14 @@
 #!/bin/bash
 
 loads_script_folder() {
+
 	if [ -z $1 ]; then
 		echo $0 error: You must provides the first argument to be the folder to have its scripts loaded
 		return
 	fi
 
 	if ! [ -d $1 ]; then
-		echo $0 error: The provided path does not exists
+		echo $0 error: The provided path \($1\) does not exists
 		return
 	fi
 
