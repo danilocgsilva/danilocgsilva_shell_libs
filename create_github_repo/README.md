@@ -16,6 +16,10 @@ Obs.: The $registered_user of this file is merely a security feature and does no
 3. Copy createrepo and the folder createrepo_program with its contents to /usr/local/bin (or any path included in your path variable). Does not forgot to alter permission to execute the createrepo
 4. In the terminal, writes: createrepo <your-web-address-holding-the-php-files> <yout-secure-registeres-user-in-configs-php-files>
 
+To do:
+
+Check if project already exists and output the proper message to the shell script.
+
 How does it works?
 
 You access a PHP script in the network through the shell. Everything os done by this script, that can even return informations to the shell script.
