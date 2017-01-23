@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ -z "$1" ]; then
+	echo Please, writes the commit before the push as the first argument
+	exit
+fi
+
+git add -A
+git commit -m "$1"
+git push -u origin master
