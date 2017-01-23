@@ -1,12 +1,26 @@
 #!/bin/bash
 
 wordpress_local_update(){
-	if [ -z $1 ] || [ -z $2 ]; then
-		echo $0 error: You must provides arguments to this command:
-		echo First argument: must be the WordPress directory source
-		echo Second argument: must be the local installation folder
+	if [ -z $1 ]; then
+		echo It is needed the first argument to be the source folder
 		return
 	fi
+
+	if [ -z $2 ]; then
+		echo It is needed the second argument to be the installed local site
+		return
+	fi
+
+	if [ -z $3 ]; then
+		echo It is needed the third argument to be the original site domain
+		return
+	fi
+
+	if [ -z $4 ]; then
+		echo It is needed the fourth argument to be the local site domain
+		return
+	fi
+
 
 	if ! [ -f $1 ]; then
 		echo $0 error: The first argument is not a directory
