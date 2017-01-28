@@ -1,3 +1,41 @@
 #!/bin/bash
 
+# Counting the problems
+declare -a problems
 
+if [ ! `which assureforwardslash` > /dev/null ]; then
+	problems+=('For this script, you must install the assureforwardslash from https://github.com/danilocgsilva/danilocgsilva_shell_libs/tree/master/assure_forward_slash/programfiles')
+fi
+
+if [ -z $1 ]; then
+	problems+=('You must provides the first argument to be the source folder')
+elif [ ! -d $1 ]; then
+	problems+=('The first argument, which must be the source foder, does not exists or is not a folder')
+fi
+
+if [ -z $2 ]; then
+	problems+=('You must provides the second argument to be the backup folder')
+elif [ ! -d $2 ]; then
+	problems+=('The second argument, which must be the backup folder, does not exists or is not a folder')
+fi
+
+problems_count=${#problems[@]}
+if [ $problems_count -gt 0 ]; then
+	for i in $(seq 0 $(expr $problems_count - 1)); do
+		echo backuptofile error: ${problems[$i]}
+	done
+	echo backuptofile: operation ignored.
+else
+	timestamp=$(date +"%s")
+	customdateformat=$(date -d @"$timestamp" +%Y%m%d_%Hh%Mm%Ss)
+	prefix=backup_$timestamp\_$customdateformat
+	source_folder=$(assureforwardslash $1)	
+	destiny_folder=$(assureforwardslash $2)
+	mkdir $destiny_folder$prefix
+	echo Copying $source_folder to $destiny_folder$prefix/files
+	cp -r $source_folder $destiny_folder$prefix/files
+	echo Copying operation finished
+	echo Compressing
+	tar cvzf $destiny_folder$prefix.tar.gz $destiny_folder$prefix .
+	echo Compressing finished
+fi
