@@ -3,7 +3,8 @@
 createrepo_util(){
 	
 	declare -a createrepo_util_errors
-	
+
+	# Starting the error counting
 	if [ -z $1 ]; then
 		createrepo_util_errors+=('You need the first argument to be the path to the php. It is empty.');
 	fi
@@ -12,6 +13,7 @@ createrepo_util(){
 		createrepo_util_errors+=('You need the second argument to be the registered user. It is empty.')
 	fi
 	
+	# Check the collected errors. If some, exits the function. Else, continues.
 	if [ ${#createrepo_util_errors[@]} -gt 0 ]; then
 		# If there's errors, skip, exiting the program
 		for i in `seq ${#createrepo_util_errors[@]}`; do
