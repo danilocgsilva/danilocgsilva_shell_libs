@@ -27,7 +27,8 @@ if [ $problems_count -gt 0 ]; then
 	echo backuptofile: operation ignored.
 else
 	timestamp=$(date +"%s")
-	customdateformat=$(date -d @"$timestamp" +%Y%m%d_%Hh%Mm%Ss)
+	#customdateformat=$(date -d @"$timestamp" +%Y%m%d_%Hh%Mm%Ss)
+	customdateformat=$(date -r $timestamp '+%Y%m%d_%Hh%Mm%Ss')
 	prefix=backup_$timestamp\_$customdateformat
 	source_folder=$(assureforwardslash $1)	
 	destiny_folder=$(assureforwardslash $2)
