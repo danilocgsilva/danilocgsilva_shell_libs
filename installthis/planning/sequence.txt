@@ -1,0 +1,12 @@
+Sequence:
+1. Remove any residual temporary folder from any supposed old trying of running this script
+2. Verify internet connection
+3. Verify presence of curl utility command line
+4. Verify the permission in the /usr/local/bin folder
+5. Create the temporary folder in the /tmp folder
+6. Download the project
+7. Loop through the projects
+	7.1 Copy recuseively all the content from the program files from each project folder.
+8. Removes the temporary folder
+
+Temporary folder name: danilocgsilva_utilities_temporary_install_folder
