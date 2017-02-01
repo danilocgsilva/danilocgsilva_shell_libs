@@ -1,5 +1,25 @@
 #!/bin/bash
 
+# The final function to be executed if all precedings checkings are valid
+function backuptofile_clean(){
+	timestamp=$(date +"%s")
+	#customdateformat=$(date -d @"$timestamp" +%Y%m%d_%Hh%Mm%Ss)
+	customdateformat=$(date -r $timestamp '+%Y%m%d_%Hh%Mm%Ss')
+	prefix=backup_$timestamp\_$customdateformat
+	source_folder=$(assureforwardslash $1)	
+	destiny_folder=$(assureforwardslash $2)
+	mkdir $destiny_folder$prefix
+	echo Copying $source_folder to $destiny_folder$prefix/files
+	cp -r $source_folder $destiny_folder$prefix/files
+	echo Copying operation finished
+	echo Compressing
+	cd $destiny_folder
+	tar czf $prefix.tar.gz $prefix
+	echo Cleaning...
+	rm -rf $prefix
+	echo Finished
+}
+
 # Counting the problems
 declare -a problems
 
@@ -26,17 +46,5 @@ if [ $problems_count -gt 0 ]; then
 	done
 	echo backuptofile: operation ignored.
 else
-	timestamp=$(date +"%s")
-	#customdateformat=$(date -d @"$timestamp" +%Y%m%d_%Hh%Mm%Ss)
-	customdateformat=$(date -r $timestamp '+%Y%m%d_%Hh%Mm%Ss')
-	prefix=backup_$timestamp\_$customdateformat
-	source_folder=$(assureforwardslash $1)	
-	destiny_folder=$(assureforwardslash $2)
-	mkdir $destiny_folder$prefix
-	echo Copying $source_folder to $destiny_folder$prefix/files
-	cp -r $source_folder $destiny_folder$prefix/files
-	echo Copying operation finished
-	echo Compressing
-	tar cvzf $destiny_folder$prefix.tar.gz $destiny_folder$prefix .
-	echo Compressing finished
+	backuptofile_clean $1 $2
 fi
