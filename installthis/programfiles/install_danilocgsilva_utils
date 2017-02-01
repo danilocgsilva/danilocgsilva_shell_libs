@@ -1,4 +1,57 @@
 #!/bin/bash
+set -e
 
-# 1.
-if [  ]
+remove_temporary_folder() {
+	if [ -d /tmp/danilocgsilva_utilities_temporary_install ]; then
+		rm -r /tmp/danilocgsilva_utilities_temporary_install
+		if ! [ -z $1 ]; then
+			echo "$1"
+		fi
+	fi	
+}
+
+# 1. Remove any residual temporary folder from any supposed old trying of running the script
+remove_temporary_folder "Residual folder removed"
+
+# 2. Verify internet connection
+ping -c 1 github.com > /dev/null
+if [ $? != 0 ]; then
+	echo Could not reach github.com. Check internet connection.
+	exit	
+fi
+
+# 3. Verify if the curl utility is installed in the system
+if [ ! `which curl` > /dev/null ]; then
+	echo The curl utility is not installed in the system. Install it first.
+	exit
+fi
+
+# 4. Verify permission in the /usr/local/bin folder
+if [ ! -w /usr/local/bin ]; then
+	echo I can not write in the /usr/local/bin. Maybe you can execute as root will solve the problem.
+	exit
+fi
+
+# 5. Create temporary folder to stores the whole folder project
+mkdir /tmp/danilocgsilva_utilities_temporary_install
+
+# 6. Download the project
+cd /tmp/danilocgsilva_utilities_temporary_install
+echo Download the project
+curl -LkSs https://api.github.com/repos/danilocgsilva/danilocgsilva_shell_libs/tarball -o master.tar.gz
+
+# 7. Loop through through the project entries
+echo Decompressing the project
+tar xzf master.tar.gz
+folder=`ls | grep -v "^master.tar.gz$" | sed -n 1p`
+cd $folder
+for i in `ls -p | grep "/$"`; do
+	echo Copying $i
+	chmod -R +x $i\programfiles/*
+	cp -pr $i\programfiles/* /usr/local/bin
+done
+
+# 8. Removes temporary folder
+remove_temporary_folder
+
+echo Finished.
