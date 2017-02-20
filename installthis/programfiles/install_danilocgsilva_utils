@@ -10,8 +10,15 @@ remove_temporary_folder() {
 	fi	
 }
 
+# 0.9
+if ! [ `which uping 2> /dev/null` ]; then
+	echo The uping utility \(universal ping from the danilocgsilva shell utilities bundle\) does not exists
+	exit
+fi
+
 # 1. Remove any residual temporary folder from any supposed old trying of running the script
 remove_temporary_folder "Residual folder removed"
+echo step 1
 
 # 2. Verify internet connection
 ping -c 1 github.com > /dev/null
@@ -19,6 +26,7 @@ if [ $? != 0 ]; then
 	echo Could not reach github.com. Check internet connection.
 	exit	
 fi
+echo step 1
 
 # 3. Verify if the curl utility is installed in the system
 if [ ! `which curl` > /dev/null ]; then

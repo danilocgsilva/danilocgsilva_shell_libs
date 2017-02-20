@@ -1,4 +1,5 @@
 Sequence:
+0.9. Check if universal ping is in the system.
 1. Remove any residual temporary folder from any supposed old trying of running this script
 2. Verify internet connection
 3. Verify presence of curl utility command line
