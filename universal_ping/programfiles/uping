@@ -2,7 +2,7 @@
 
 ##
 # u_ping stands for "Universal Ping". Auxiliar funcition. It must checks if the ping present in the system is the Linux ping or Microsoft ping to choose the right parameter to provides
-u_ping() {
+uping() {
 
     if [ ${#1} -eq 0 ]; then
         echo You must provides the site to ping.
@@ -20,3 +20,5 @@ u_ping() {
         ping -c 2 $site_to_ping > /dev/null
     fi
 }
+
+uping $1

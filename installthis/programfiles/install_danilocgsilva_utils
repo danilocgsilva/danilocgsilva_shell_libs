@@ -4,29 +4,43 @@ set -e
 remove_temporary_folder() {
 	if [ -d /tmp/danilocgsilva_utilities_temporary_install ]; then
 		rm -r /tmp/danilocgsilva_utilities_temporary_install
-		if ! [ -z $1 ]; then
+		if [ ! -z $1 ]; then
 			echo "$1"
 		fi
 	fi	
 }
 
-# 0.9
-if ! [ `which uping 2> /dev/null` ]; then
-	echo The uping utility \(universal ping from the danilocgsilva shell utilities bundle\) does not exists
-	exit
-fi
+
+##
+# u_ping stands for "Universal Ping". Auxiliar funcition. It must checks if the ping present in the system is the Linux ping or Microsoft ping to choose the right parameter to provides
+uping() {
+
+    if [ ${#1} -eq 0 ]; then
+        echo You must provides the site to ping.
+        return
+    fi
+
+    ping_source=$(which ping)
+    site_to_ping=$1
+
+    # Tests if exists Windows/system32 in the path. If so, is the Windows ping utility.
+    shopt -s nocasematch
+    if [[ $ping_source =~ 'windows/system32' ]]; then
+        ping -n 2 $site_to_ping > /dev/null
+    else
+        ping -c 2 $site_to_ping > /dev/null
+    fi
+}
 
 # 1. Remove any residual temporary folder from any supposed old trying of running the script
 remove_temporary_folder "Residual folder removed"
-echo step 1
 
 # 2. Verify internet connection
-ping -c 1 github.com > /dev/null
+uping github.com > /dev/null
 if [ $? != 0 ]; then
 	echo Could not reach github.com. Check internet connection.
 	exit	
 fi
-echo step 1
 
 # 3. Verify if the curl utility is installed in the system
 if [ ! `which curl` > /dev/null ]; then
