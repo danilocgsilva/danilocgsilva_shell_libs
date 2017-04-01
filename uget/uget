@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if which wget > /dev/null 2>&1; then
+	wget $1
+elif which curl > /dev/null 2>&1; then
+	curl -O $1
+else
+	echo Neither wget or curl is installed in the system. I can\'t continue.
+	exit
+fi
